@@ -32,5 +32,30 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "99fbdcb8-2ee2-44a6-ab5c-ab819883a556",
+    "colId": "eac716f9-58a7-4530-b18b-105830603576",
+    "containerId": "",
+    "name": "Send message",
+    "url": "{{telegramApi}}/bot{{botToken}}/sendMessage?chat_id=-1001739831744 &text=hello",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2023-04-03T13:05:51.754Z",
+    "modified": "2023-04-03T13:07:51.465Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "chat_id",
+        "value": "-1001739831744 ",
+        "isPath": false
+      },
+      {
+        "name": "text",
+        "value": "hello",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

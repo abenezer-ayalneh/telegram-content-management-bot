@@ -20,11 +20,13 @@ async def say_hello(request: Request):
     # Get data fro
     data = (await request.json())
     update = Update.de_json(data, bot)
-    text = update.message.text
+    
     print(chalk.blue(update))
+    print(chalk.red(update.message))
 
 
-    if text != None:
+    if update.message != None:
+        text = update.message.text
         if text.startswith('/'):
             await commands.decider(update)
         else:

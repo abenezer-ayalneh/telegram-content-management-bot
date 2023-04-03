@@ -5,5 +5,12 @@
     "created": "2023-04-03T08:29:54.577Z",
     "sortNum": 10000,
     "folders": []
+  },
+  {
+    "_id": "eac716f9-58a7-4530-b18b-105830603576",
+    "colName": "Messages",
+    "created": "2023-04-03T13:05:43.632Z",
+    "sortNum": 20000,
+    "folders": []
   }
 ]
