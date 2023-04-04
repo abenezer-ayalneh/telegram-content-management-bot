@@ -1,0 +1,17 @@
+{
+  "commands": [
+    {
+      "command": "start",
+      "description": "Start using bot"
+    },
+    {
+      "command": "help",
+      "description": "Display list of commands available"
+    },
+    {
+      "command": "newPost",
+      "description": "Post a new post to your channel or group"
+    }
+  ],
+  "language_code": "en"
+}

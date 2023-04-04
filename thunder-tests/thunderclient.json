@@ -18,16 +18,21 @@
     "colId": "d3e27ba5-51f4-4518-ac21-3fa8e7571ee2",
     "containerId": "",
     "name": "Set webhook",
-    "url": "https://api.telegram.org/bot{{botToken}}/setWebhook?url={{url}}",
+    "url": "https://api.telegram.org/bot{{botToken}}/setWebhook?url={{url}}&drop_pending_updates=true",
     "method": "GET",
     "sortNum": 5000,
     "created": "2023-04-03T08:30:30.115Z",
-    "modified": "2023-04-03T08:33:28.472Z",
+    "modified": "2023-04-04T12:59:49.889Z",
     "headers": [],
     "params": [
       {
         "name": "url",
         "value": "{{url}}",
+        "isPath": false
+      },
+      {
+        "name": "drop_pending_updates",
+        "value": "true",
         "isPath": false
       }
     ],
@@ -42,12 +47,12 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-04-03T13:05:51.754Z",
-    "modified": "2023-04-03T13:07:51.465Z",
+    "modified": "2023-04-04T07:02:42.821Z",
     "headers": [],
     "params": [
       {
         "name": "chat_id",
-        "value": "-1001739831744 ",
+        "value": "-1001739831744",
         "isPath": false
       },
       {
@@ -56,6 +61,25 @@
         "isPath": false
       }
     ],
+    "tests": []
+  },
+  {
+    "_id": "4608d781-ea61-4ea8-85e5-8bc24af311b7",
+    "colId": "f3ce3b2e-16de-4e7c-adf6-c939e09fdb0b",
+    "containerId": "",
+    "name": "Set commands",
+    "url": "{{telegramApi}}/bot{{botToken}}/setMyCommands",
+    "method": "GET",
+    "sortNum": 10000,
+    "created": "2023-04-04T07:29:39.590Z",
+    "modified": "2023-04-04T12:20:31.827Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"commands\": [\n    {\n      \"command\": \"start\",\n      \"description\": \"Start using bot\"\n    },\n    {\n      \"command\": \"help\",\n      \"description\": \"Display list of commands available\"\n    },\n    {\n      \"command\": \"newpost\",\n      \"description\": \"Post a new post to your channel or group\"\n    }\n  ],\n  \"language_code\": \"en\"\n}",
+      "form": []
+    },
     "tests": []
   }
 ]

@@ -1,0 +1,2 @@
+INSERT_POST_INFO="insert_post_info"
+UPDATE_POST_TITLE="update_post_title"
