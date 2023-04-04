@@ -1,5 +1,5 @@
 import os
-from telegram import Update, Bot
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Bot
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from misc import constants
@@ -35,7 +35,13 @@ class MessageHandler:
         text = f"""Success! Title updated."""
         self.db.sessions.update_one({"chat_id": chat_id}, {
                                    "$set": {"question": None, "data.title": title}})
-        await self.bot.send_message(text=text, chat_id=chat_id, parse_mode="HTML")
+        reply_markup = InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton(
+                    text="≪ Back to Post", callback_data="new_post.back_to_post"),
+            ]
+        ])
+        await self.bot.send_message(text=text, chat_id=chat_id, reply_markup=reply_markup, parse_mode="HTML")
 
     async def default(self):
         id = self.update.message.from_user.id
