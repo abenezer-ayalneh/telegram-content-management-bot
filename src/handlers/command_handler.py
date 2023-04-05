@@ -65,16 +65,6 @@ class CommandHandler:
 
         chat_id = self.update.message.from_user.id
         text = f"""Using the following attributes, please add detail information about your post"""
-        reply_markup = InlineKeyboardMarkup([
-            [
-                InlineKeyboardButton(
-                    text="Title", callback_data="new_post.title"),
-                InlineKeyboardButton(text="Description",
-                                     callback_data="new_post.description")
-            ],
-            [
-                InlineKeyboardButton("Post ✅", callback_data="post")
-            ]
-        ])
+        reply_markup = constants.NEW_POST_INLINE_KEYBOARD
 
         await self.bot.send_message(text=text, chat_id=chat_id, reply_markup=reply_markup, parse_mode="HTML")
