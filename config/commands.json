@@ -9,8 +9,12 @@
       "description": "Display list of commands available"
     },
     {
-      "command": "newPost",
+      "command": "new_post",
       "description": "Post a new post to your channel or group"
+    },
+    {
+      "command": "profile",
+      "description": "Show your profile information"
     }
   ],
   "language_code": "en"
