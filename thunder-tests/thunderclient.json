@@ -18,16 +18,16 @@
     "colId": "d3e27ba5-51f4-4518-ac21-3fa8e7571ee2",
     "containerId": "",
     "name": "Set webhook",
-    "url": "https://api.telegram.org/bot{{botToken}}/setWebhook?url={{url}}&drop_pending_updates=true",
+    "url": "{{TELEGRAM_API}}/bot{{TELEGRAM_BOT_TOKEN}}/setWebhook?url={{TELEGRAM_WEBHOOK_URL}}&drop_pending_updates=true",
     "method": "GET",
     "sortNum": 5000,
     "created": "2023-04-03T08:30:30.115Z",
-    "modified": "2023-04-04T12:59:49.889Z",
+    "modified": "2023-04-08T19:33:58.705Z",
     "headers": [],
     "params": [
       {
         "name": "url",
-        "value": "{{url}}",
+        "value": "{{TELEGRAM_WEBHOOK_URL}}",
         "isPath": false
       },
       {

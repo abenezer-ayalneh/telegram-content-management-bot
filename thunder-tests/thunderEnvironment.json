@@ -1,24 +1,13 @@
 [
   {
-    "_id": "f2a03886-1819-4ee5-a168-55504b39644a",
-    "name": "Env",
-    "default": true,
-    "sortNum": 10000,
-    "created": "2023-04-08T05:13:50.672Z",
-    "modified": "2023-04-08T05:13:50.672Z",
-    "data": [
-      {
-        "name": "botToken",
-        "value": "6117974573:AAHeGzg4u_FUyq4mLRMexCqwht8wPajPAXQ"
-      },
-      {
-        "name": "url",
-        "value": "https://04bb-102-218-51-187.ngrok-free.app"
-      },
-      {
-        "name": "telegramApi",
-        "value": "https://api.telegram.org"
-      }
-    ]
+    "_id": "a4949ef0-03b8-43b8-a33a-3efcc80df9db",
+    "name": "(Local Env)",
+    "default": false,
+    "global": true,
+    "local": true,
+    "sortNum": -1,
+    "created": "2023-04-08T19:27:43.528Z",
+    "modified": "2023-04-08T19:27:43.528Z",
+    "data": []
   }
 ]
