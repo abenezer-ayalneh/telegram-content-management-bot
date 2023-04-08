@@ -30,6 +30,8 @@ class CommandHandler:
         match text:
             case '/start':
                 await self.start()
+            case '/connect':
+                await self.connect()
             case '/help':
                 await self.help()
             case '/new_post':
@@ -39,13 +41,20 @@ class CommandHandler:
             case _:
                 await self.default()
 
+    async def connect(self):
+        text = 'Lets connect me to your channel!\nHere are the two steps needed:\n\n<b>Step 1:</b> You have to add me as an admin to your channel with just the following permissions turned on:\n\t✅ Post Messages\n\t✅ Edit Messages\n\t✅ Delete Messages\n<b>Step 2:</b> Forward me any message from the channel'
+
+        self.db.sessions.update_one({"chat_id": self.chat_id}, {
+            "$set": {"question": constants.CONNECT_WITH_CHANNEL}}, upsert=True)
+
+        await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
+        await self.bot.send_message(text="I'm waiting...", chat_id=self.chat_id, parse_mode="HTML")
+
     async def default(self):
-        chat_id = self.update.message.from_user.id
         text = f"""You are tripping! There is no command with this name."""
-        await self.bot.send_message(text=text, chat_id=chat_id, parse_mode="HTML")
+        await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
 
     async def start(self):
-        id = self.update.message.from_user.id
         text = f"""Hello there <b>{self.update.message.from_user.first_name}</b>, welcome to the <b>Telegram Content Management</b> bot. \
             I can help you manage your contents across different groups and channels.\n\nYou can control me by sending these commands:
         """
@@ -57,10 +66,9 @@ class CommandHandler:
                     " - " + command['description']
 
         await self.register_user()
-        await self.bot.send_message(text=text, chat_id=id, parse_mode="HTML")
+        await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
 
     async def help(self):
-        chat_id = self.update.message.from_user.id
         text = 'Need help with commands?\nHere are list of commands you can use:\n'
         with open('config/commands.json') as commands_file:
             commands_json = json.load(commands_file)
@@ -69,18 +77,16 @@ class CommandHandler:
                 text += "\n/" + command['command'] + \
                     " - " + command['description']
 
-        await self.bot.send_message(text=text, chat_id=chat_id, parse_mode="HTML")
+        await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
 
     async def new_post(self):
-        chat_id = self.update.message.from_user.id
-
-        self.db.sessions.update_one({"chat_id": chat_id}, {
+        self.db.sessions.update_one({"chat_id": self.chat_id}, {
             '$set': {"command": "/post", "question": constants.INSERT_POST_INFO, "data": {}}}, upsert=True)
 
         text = f"""Using the following attributes, please add detail information about your post"""
         reply_markup = constants.NEW_POST_INLINE_KEYBOARD
 
-        await self.bot.send_message(text=text, chat_id=chat_id, reply_markup=reply_markup, parse_mode="HTML")
+        await self.bot.send_message(text=text, chat_id=self.chat_id, reply_markup=reply_markup, parse_mode="HTML")
 
     async def register_user(self):
         user_from_db = self.db.users.find_one({"chat_id": self.chat_id})

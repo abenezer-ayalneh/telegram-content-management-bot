@@ -19,14 +19,14 @@ callbacks = CallbackHandler(bot)
 
 @app.post('/')
 async def say_hello(request: Request):
-    # Get data fro
+    # Get data from webhook request
     data = (await request.json())
     update = Update.de_json(data, bot)
     
     print(chalk.blue(update.to_json()))
     # print(chalk.red(update.message))
 
-    if update.message != None:
+    if update.message != None and update.message.text != None:
         text = update.message.text
         if text.startswith('/'):
             await commands.decider(update)

@@ -321,3 +321,5 @@ cython_debug/
 
 # User
 data/
+
+json-formatter.json

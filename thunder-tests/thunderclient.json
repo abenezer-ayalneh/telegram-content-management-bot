@@ -72,12 +72,12 @@
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-04-04T07:29:39.590Z",
-    "modified": "2023-04-04T12:20:31.827Z",
+    "modified": "2023-04-08T16:13:19.165Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"commands\": [\n    {\n      \"command\": \"start\",\n      \"description\": \"Start using bot\"\n    },\n    {\n      \"command\": \"help\",\n      \"description\": \"Display list of commands available\"\n    },\n    {\n      \"command\": \"newpost\",\n      \"description\": \"Post a new post to your channel or group\"\n    }\n  ],\n  \"language_code\": \"en\"\n}",
+      "raw": "{\n  \"commands\": [\n    {\n      \"command\": \"start\",\n      \"description\": \"Start using bot\"\n    },\n    {\n      \"command\": \"help\",\n      \"description\": \"Display list of commands available\"\n    },\n    {\n      \"command\": \"connect\",\n      \"description\": \"Connect the bot with your channel\"\n    },\n    {\n      \"command\": \"new_post\",\n      \"description\": \"Post a new post to your channel or group\"\n    },\n    {\n      \"command\": \"profile\",\n      \"description\": \"Show your profile information\"\n    }\n  ],\n  \"language_code\": \"en\"\n}",
       "form": []
     },
     "tests": []

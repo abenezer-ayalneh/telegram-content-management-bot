@@ -10,6 +10,7 @@ load_dotenv()
 class CallbackHandler:
     bot: Bot
     update: Update
+    chat_id: int
     client = MongoClient(os.getenv('MONGO_CONNECTION_URL'))
     db = client['telegram']
 
@@ -19,6 +20,7 @@ class CallbackHandler:
     async def decider(self, update: Update):
         # Decide where to go
         self.update = update
+        self.chat_id = update.callback_query.from_user.id
         callback_data = update.callback_query.data
 
         match callback_data:
@@ -34,39 +36,35 @@ class CallbackHandler:
                 await self.default()
 
     async def default(self):
-        chat_id = self.update.callback_query.from_user.id
         text = """This button doesn't have a purpose yet! Try another"""
-        await self.bot.send_message(text=text, chat_id=chat_id, parse_mode="HTML")
+        await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
 
     async def new_post_attribute(self):
-        chat_id = self.update.callback_query.from_user.id
         message_id = self.update.callback_query.message.id
         attribute = self.update.callback_query.data.split(".")[-1]
         text = f"""Ok. Send me the <b>{attribute}</b> of your post."""
 
-        await self.bot.edit_message_text(text=text, chat_id=chat_id, message_id=message_id, parse_mode="HTML")
-        self.db.sessions.update_one({"chat_id": chat_id}, {
+        await self.bot.edit_message_text(text=text, chat_id=self.chat_id, message_id=message_id, parse_mode="HTML")
+        self.db.sessions.update_one({"chat_id": self.chat_id}, {
             '$set': {"question": constants.UPDATE_POST_ATTRIBUTE, "attribute": attribute}}, upsert=True)
 
     async def new_post_back_to_post(self):
-        chat_id = self.update.callback_query.from_user.id
         text = f"""Using the following attributes, please add detail information about your post\n"""
         message_id = self.update.callback_query.message.id
 
-        session = self.db.sessions.find_one({"chat_id": chat_id})
+        session = self.db.sessions.find_one({"chat_id": self.chat_id})
         for key, value in session['data'].items():
             text += f"\n<b>{key.upper()}</b>: {value}"
 
         reply_markup = constants.NEW_POST_INLINE_KEYBOARD
 
-        await self.bot.edit_message_text(text=text, chat_id=chat_id, message_id=message_id, reply_markup=reply_markup, parse_mode="HTML")
+        await self.bot.edit_message_text(text=text, chat_id=self.chat_id, message_id=message_id, reply_markup=reply_markup, parse_mode="HTML")
 
     async def post_confirmation(self):
-        chat_id = self.update.callback_query.from_user.id
         text = f"""Here are the details of your post so far:\n"""
         message_id = self.update.callback_query.message.id
 
-        session = self.db.sessions.find_one({"chat_id": chat_id})
+        session = self.db.sessions.find_one({"chat_id": self.chat_id})
         for key, value in session['data'].items():
             text += f"\n<b>{key.upper()}</b>: {value}"
 
@@ -80,16 +78,29 @@ class CallbackHandler:
             ]
         ])
 
-        await self.bot.edit_message_text(text=text, chat_id=chat_id, message_id=message_id, reply_markup=reply_markup, parse_mode="HTML")
+        await self.bot.edit_message_text(text=text, chat_id=self.chat_id, message_id=message_id, reply_markup=reply_markup, parse_mode="HTML")
 
     async def confirm_post(self):
-        chat_id = self.update.callback_query.from_user.id
         message_id = self.update.callback_query.message.id
+        user = self.db.users.find_one({"chat_id": self.chat_id})
 
-        session = self.db.sessions.find_one({"chat_id": chat_id})
-        self.db.posts.insert_one(
-            {"chat_id": chat_id, **session['data']})
+        if user != None and user['channels'] != None and len(user['channels']) > 0:
+            channel_id = user['channels'][0]
+            session = self.db.sessions.find_one({"chat_id": self.chat_id})
+            data = session['data']
+            self.db.posts.insert_one(
+                {"chat_id": self.chat_id, **data, "status": True})
 
-        text = f"""Post successfully uploaded! 🎉"""
+            post = ''
+            for key, value in data.items():
+                post += f"\n<b>{key.upper()}</b>: {value}"
 
-        await self.bot.edit_message_text(text=text, chat_id=chat_id, message_id=message_id, parse_mode="HTML")
+            await self.bot.send_message(text=post, chat_id=channel_id, parse_mode="HTML")
+            
+            text = f"""Post successfully uploaded! 🎉"""
+            await self.bot.edit_message_text(text=text, chat_id=self.chat_id, message_id=message_id, parse_mode="HTML")
+        else:
+            text = f"""You haven't connected me with your channel ☹️"""
+
+            await self.bot.edit_message_text(text=text, chat_id=self.chat_id, message_id=message_id, parse_mode="HTML")
+            

@@ -3,6 +3,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 INSERT_POST_INFO = "insert_post_info"
 UPDATE_POST_ATTRIBUTE = "update_post_attribute"
+CONNECT_WITH_CHANNEL = "connect_with_channel"
 NEW_POST_INLINE_KEYBOARD = InlineKeyboardMarkup([
     [
         InlineKeyboardButton(

@@ -9,6 +9,10 @@
       "description": "Display list of commands available"
     },
     {
+      "command": "connect",
+      "description": "Connect the bot with your channel"
+    },
+    {
       "command": "new_post",
       "description": "Post a new post to your channel or group"
     },
