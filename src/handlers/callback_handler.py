@@ -3,6 +3,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Bot
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from misc import constants
+from src.handlers.command_handler import CommandHandler
 
 load_dotenv()
 
@@ -32,8 +33,19 @@ class CallbackHandler:
                 await self.post_confirmation()
             case "new_post.confirm_post":
                 await self.confirm_post()
+            case constants.CHANGE_CHANNEL:
+                await self.change_channel()
             case _:
                 await self.default()
+
+    async def change_channel(self):
+        text = 'Lets connect me to your new channel!\nHere are the two steps needed:\n\n<b>Step 1:</b> You have to add me as an admin to your channel with just the following permissions turned on:\n\t✅ Post Messages\n\t✅ Edit Messages\n\t✅ Delete Messages\n<b>Step 2:</b> Forward me any message from the channel'
+
+        self.db.sessions.update_one({"chat_id": self.chat_id}, {
+            "$set": {"question": constants.CONNECT_WITH_CHANNEL}}, upsert=True)
+
+        await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
+        await self.bot.send_message(text="I'm waiting...", chat_id=self.chat_id, parse_mode="HTML")
 
     async def default(self):
         text = """This button doesn't have a purpose yet! Try another"""
@@ -96,11 +108,10 @@ class CallbackHandler:
                 post += f"\n<b>{key.upper()}</b>: {value}"
 
             await self.bot.send_message(text=post, chat_id=channel_id, parse_mode="HTML")
-            
+
             text = f"""Post successfully uploaded! 🎉"""
             await self.bot.edit_message_text(text=text, chat_id=self.chat_id, message_id=message_id, parse_mode="HTML")
         else:
             text = f"""You haven't connected me with your channel ☹️"""
 
             await self.bot.edit_message_text(text=text, chat_id=self.chat_id, message_id=message_id, parse_mode="HTML")
-            

@@ -42,13 +42,26 @@ class CommandHandler:
                 await self.default()
 
     async def connect(self):
-        text = 'Lets connect me to your channel!\nHere are the two steps needed:\n\n<b>Step 1:</b> You have to add me as an admin to your channel with just the following permissions turned on:\n\t✅ Post Messages\n\t✅ Edit Messages\n\t✅ Delete Messages\n<b>Step 2:</b> Forward me any message from the channel'
+        user = self.db.users.find_one({"chat_id": self.chat_id})
 
-        self.db.sessions.update_one({"chat_id": self.chat_id}, {
-            "$set": {"question": constants.CONNECT_WITH_CHANNEL}}, upsert=True)
+        if user != None and user['channels'] != None and len(user['channels']) > 0:
+            text = f"You already have a channel that I am connected to.\nDo you want to change it?"
+            reply_markup = InlineKeyboardMarkup([
+                [
+                    InlineKeyboardButton('Yes ✅', callback_data=constants.CHANGE_CHANNEL),
+                    InlineKeyboardButton('No ❌', callback_data=constants.CHANGE_CHANNEL),
+                ]
+            ])
 
-        await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
-        await self.bot.send_message(text="I'm waiting...", chat_id=self.chat_id, parse_mode="HTML")
+            await self.bot.send_message(text=text, chat_id=self.chat_id, reply_markup=reply_markup, parse_mode="HTML")
+        else:
+            text = 'Lets connect me to your channel!\nHere are the two steps needed:\n\n<b>Step 1:</b> You have to add me as an admin to your channel with just the following permissions turned on:\n\t✅ Post Messages\n\t✅ Edit Messages\n\t✅ Delete Messages\n<b>Step 2:</b> Forward me any message from the channel'
+
+            self.db.sessions.update_one({"chat_id": self.chat_id}, {
+                "$set": {"question": constants.CONNECT_WITH_CHANNEL}}, upsert=True)
+
+            await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
+            await self.bot.send_message(text="I'm waiting...", chat_id=self.chat_id, parse_mode="HTML")
 
     async def default(self):
         text = f"""You are tripping! There is no command with this name."""

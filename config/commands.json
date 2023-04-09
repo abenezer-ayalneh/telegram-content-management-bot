@@ -14,7 +14,7 @@
     },
     {
       "command": "new_post",
-      "description": "Post a new post to your channel or group"
+      "description": "Post a new post to your channel"
     },
     {
       "command": "profile",

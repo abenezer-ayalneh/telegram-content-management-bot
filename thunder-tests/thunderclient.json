@@ -4,11 +4,11 @@
     "colId": "d3e27ba5-51f4-4518-ac21-3fa8e7571ee2",
     "containerId": "",
     "name": "Delete webhook",
-    "url": "https://api.telegram.org/bot{{botToken}}/deleteWebhook?",
+    "url": "{{TELEGRAM_API}}/bot{{TELEGRAM_BOT_TOKEN}}/deleteWebhook?",
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-04-03T08:30:14.338Z",
-    "modified": "2023-04-03T08:34:07.593Z",
+    "modified": "2023-04-08T19:45:53.346Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -43,11 +43,11 @@
     "colId": "eac716f9-58a7-4530-b18b-105830603576",
     "containerId": "",
     "name": "Send message",
-    "url": "{{telegramApi}}/bot{{botToken}}/sendMessage?chat_id=-1001739831744 &text=hello",
+    "url": "{{TELEGRAM_API}}/bot{{TELEGRAM_BOT_TOKEN}}/sendMessage?chat_id=-1001739831744 &text=hello",
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-04-03T13:05:51.754Z",
-    "modified": "2023-04-04T07:02:42.821Z",
+    "modified": "2023-04-08T19:45:23.723Z",
     "headers": [],
     "params": [
       {
@@ -68,16 +68,16 @@
     "colId": "f3ce3b2e-16de-4e7c-adf6-c939e09fdb0b",
     "containerId": "",
     "name": "Set commands",
-    "url": "{{telegramApi}}/bot{{botToken}}/setMyCommands",
+    "url": "{{TELEGRAM_API}}/bot{{TELEGRAM_BOT_TOKEN}}/setMyCommands",
     "method": "GET",
     "sortNum": 10000,
     "created": "2023-04-04T07:29:39.590Z",
-    "modified": "2023-04-08T16:13:19.165Z",
+    "modified": "2023-04-08T19:43:34.365Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"commands\": [\n    {\n      \"command\": \"start\",\n      \"description\": \"Start using bot\"\n    },\n    {\n      \"command\": \"help\",\n      \"description\": \"Display list of commands available\"\n    },\n    {\n      \"command\": \"connect\",\n      \"description\": \"Connect the bot with your channel\"\n    },\n    {\n      \"command\": \"new_post\",\n      \"description\": \"Post a new post to your channel or group\"\n    },\n    {\n      \"command\": \"profile\",\n      \"description\": \"Show your profile information\"\n    }\n  ],\n  \"language_code\": \"en\"\n}",
+      "raw": "{\n  \"commands\": [\n    {\n      \"command\": \"start\",\n      \"description\": \"Start using bot\"\n    },\n    {\n      \"command\": \"help\",\n      \"description\": \"Display list of commands available\"\n    },\n    {\n      \"command\": \"connect\",\n      \"description\": \"Connect the bot with your channel\"\n    },\n    {\n      \"command\": \"new_post\",\n      \"description\": \"Post a new post to your channel\"\n    },\n    {\n      \"command\": \"profile\",\n      \"description\": \"Show your profile information\"\n    }\n  ],\n  \"language_code\": \"en\"\n}",
       "form": []
     },
     "tests": []

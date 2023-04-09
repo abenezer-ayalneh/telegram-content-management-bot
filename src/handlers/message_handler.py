@@ -36,6 +36,8 @@ class MessageHandler:
                     await self.connect_with_channel()
                 case _:
                     await self.default()
+        else:
+            await self.default()
 
     async def connect_with_channel(self):
         self.db.users.update_one({"chat_id": self.chat_id}, {
@@ -65,5 +67,5 @@ class MessageHandler:
         await self.bot.send_message(text=text, chat_id=self.chat_id, reply_markup=reply_markup, parse_mode="HTML")
 
     async def default(self):
-        text = f"""Wrong command/message on the wrong time!"""
+        text = f"""Wrong command/message or the wrong time!"""
         await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
