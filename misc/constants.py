@@ -15,6 +15,10 @@ NEW_POST_INLINE_KEYBOARD = InlineKeyboardMarkup([
     ],
     [
         InlineKeyboardButton(
+            "Images", callback_data="new_post.update.images")
+    ],
+    [
+        InlineKeyboardButton(
             "Post ✅", callback_data="new_post.post_confirmation")
     ]
 ])

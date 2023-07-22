@@ -7,7 +7,6 @@ from src.handlers.command_handler import CommandHandler
 
 load_dotenv()
 
-
 class CallbackHandler:
     bot: Bot
     update: Update
@@ -25,7 +24,7 @@ class CallbackHandler:
         callback_data = update.callback_query.data
 
         match callback_data:
-            case "new_post.update.title" | "new_post.update.description":
+            case "new_post.update.title" | "new_post.update.description" | "new_post.update.images":
                 await self.new_post_attribute()
             case "new_post.back_to_post":
                 await self.new_post_back_to_post()

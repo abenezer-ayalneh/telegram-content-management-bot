@@ -1,5 +1,6 @@
 import os
 from typing import Any
+from src.handlers.command_handlers.start_command import StartCommand
 from telegram import Update, Bot, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
 import json
 from dotenv import load_dotenv
@@ -16,8 +17,12 @@ class CommandHandler:
     chat_id: int
     db: Database
 
+    # Classes
+    start_command: StartCommand
+
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
+        self.start_command = StartCommand(self.update, self.chat_id)
 
     async def decider(self, update: Update):
         # Decide where to go
@@ -29,7 +34,7 @@ class CommandHandler:
 
         match text:
             case '/start':
-                await self.start()
+                await self.start_command.start()
             case '/connect':
                 await self.connect()
             case '/help':
@@ -67,19 +72,7 @@ class CommandHandler:
         text = f"""You are tripping! There is no command with this name."""
         await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
 
-    async def start(self):
-        text = f"""Hello there <b>{self.update.message.from_user.first_name}</b>, welcome to the <b>Telegram Content Management</b> bot. \
-            I can help you manage your contents across different groups and channels.\n\nYou can control me by sending these commands:
-        """
-        with open('config/commands.json') as commands_file:
-            commands_json = json.load(commands_file)
 
-            for command in commands_json["commands"]:
-                text += "\n/" + command['command'] + \
-                    " - " + command['description']
-
-        await self.register_user()
-        await self.bot.send_message(text=text, chat_id=self.chat_id, parse_mode="HTML")
 
     async def help(self):
         text = 'Need help with commands?\nHere are list of commands you can use:\n'
@@ -96,7 +89,7 @@ class CommandHandler:
         self.db.sessions.update_one({"chat_id": self.chat_id}, {
             '$set': {"command": "/post", "question": constants.INSERT_POST_INFO, "data": {}}}, upsert=True)
 
-        text = f"""Using the following attributes, please add detail information about your post"""
+        text = f"""Using the following attributes, please add detailed information about your post"""
         reply_markup = constants.NEW_POST_INLINE_KEYBOARD
 
         await self.bot.send_message(text=text, chat_id=self.chat_id, reply_markup=reply_markup, parse_mode="HTML")
