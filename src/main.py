@@ -1,38 +1,31 @@
 from fastapi import Request, FastAPI
-from dotenv import dotenv_values
-from telegram import Update, Bot
+from telegram import Update
 import chalk
-from src.handlers.command_handler import CommandHandler
-from src.handlers.message_handler import MessageHandler
-from src.handlers.callback_handler import CallbackHandler
+from src.handlers.command_decider import CommandDecider
+from src.handlers.message_decider import MessageDecider
+from src.handlers.callback_decider import CallbackDecider
+from src.root import Root
 
 app = FastAPI()
-env = dotenv_values('.env')
-token = env['TELEGRAM_BOT_TOKEN']
-bot = Bot(token)
 
-telegramUrl = 'https://api.telegram.org/bot{}'.format(token)
+commands = CommandDecider()
+messages = MessageDecider()
+callbacks = CallbackDecider()
+root = Root()
 
-commands = CommandHandler(bot)
-messages = MessageHandler(bot)
-callbacks = CallbackHandler(bot)
 
 @app.post('/')
 async def say_hello(request: Request):
     # Get data from webhook request
     data = (await request.json())
-    update = Update.de_json(data, bot)
-    
-    print(chalk.blue(update.to_json()))
-    # print(chalk.red(update.message))
+    update = Update.de_json(data, root.bot)
+    root.set_update(update)
 
     if update.message != None and update.message.text != None:
         text = update.message.text
         if text.startswith('/'):
-            await commands.decider(update)
+            await commands.decider()
         else:
-            await messages.decider(update)
+            await messages.decider()
     elif update.callback_query != None:
-        await callbacks.decider(update)
-    
-
+        await callbacks.decider()

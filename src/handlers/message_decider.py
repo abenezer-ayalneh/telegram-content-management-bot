@@ -4,20 +4,16 @@ from telegram._message import Message
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from misc import constants
+from src.root import Root
 
 load_dotenv()
 
 
-class MessageHandler:
-    bot: Bot
-    update: Update
-    message: Message
-    chat_id: int
-    client = MongoClient(os.getenv('MONGO_CONNECTION_URL'))
-    db = client['telegram']
+class MessageDecider:
+    root: Root
 
-    def __init__(self, bot: Bot) -> None:
-        self.bot = bot
+    def __init__(self) -> None:
+        self.root = Root()
 
     async def decider(self, update: Update):
         # Decide where to go
