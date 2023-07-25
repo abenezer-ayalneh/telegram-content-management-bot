@@ -14,7 +14,7 @@ class CallbackDecider:
 
     def __init__(self) -> None:
         self.root = Root()
-        self.new_post_callback = NewPostCallbacks()
+        self.new_post_callbacks = NewPostCallbacks()
         self.channel_callbacks = ChannelCallbacks()
 
     async def decider(self):
